@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Afrekenen{% endblock %}
+
+{% block content %}
+    <h1>Afrekenen</h1>
+    <form action="{{ path('order_checkout') }}" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Naam</label>
+            <input type="text" class="form-control" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Adres</label>
+            <input type="text" class="form-control" name="address" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Bestelling plaatsen</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inloggen{% endblock %}
+
+{% block content %}
+    <h1>Inloggen</h1>
+    <form method="post">
+        <input type="text" name="_username" placeholder="E-mail" required>
+        <input type="password" name="_password" placeholder="Wachtwoord" required>
+        <button type="submit">Login</button>
+    </form>
+{% endblock %}

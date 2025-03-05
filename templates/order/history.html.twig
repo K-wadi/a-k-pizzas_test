@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mijn Bestellingen{% endblock %}
+
+{% block content %}
+    <h1>Mijn Bestellingen</h1>
+    {% if orders is empty %}
+        <p>Je hebt nog geen bestellingen geplaatst.</p>
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Status</th>
+                <th>Datum</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.createdAt|date('d-m-Y H:i') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Winkelwagen{% endblock %}
+
+{% block content %}
+    <h1>Winkelwagen</h1>
+    {% if cart is empty %}
+        <p>Je winkelwagen is leeg.</p>
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Pizza</th>
+                <th>Aantal</th>
+                <th>Prijs</th>
+                <th>Actie</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in cart %}
+                <tr>
+                    <td>{{ item.pizza.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>€{{ (item.pizza.price * item.quantity)|number_format(2, ',', '.') }}</td>
+                    <td><a href="{{ path('order_remove', {'id': item.pizza.id}) }}" class="btn btn-danger">Verwijderen</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('order_checkout') }}" class="btn btn-success">Afrekenen</a>
+    {% endif %}
+{% endblock %}

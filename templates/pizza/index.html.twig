@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pizza Menu{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Onze Pizza's</h1>
+    <div class="row">
+        {% for pizza in pizzas %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <img src="{{ pizza.image }}" class="card-img-top" alt="{{ pizza.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pizza.name }}</h5>
+                        <p class="card-text">{{ pizza.description }}</p>
+                        <p class="fw-bold">€{{ pizza.price|number_format(2, ',', '.') }}</p>
+                        <a href="{{ path('pizza_show', {'id': pizza.id}) }}" class="btn btn-primary">Meer info</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

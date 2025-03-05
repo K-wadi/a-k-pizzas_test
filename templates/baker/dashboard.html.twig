@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bestellingen Beheren{% endblock %}
+
+{% block content %}
+    <h1>Bestellingen</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Status</th>
+            <th>Actie</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    {% if order.status != 'Done' %}
+                        <a href="{{ path('order_update', {'id': order.id, 'status': 'In Progress'}) }}" class="btn btn-warning">In Progress</a>
+                        <a href="{{ path('order_update', {'id': order.id, 'status': 'Done'}) }}" class="btn btn-success">Done</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ pizza.name }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <img src="{{ pizza.image }}" class="card-img-top" alt="{{ pizza.name }}">
+        <div class="card-body">
+            <h1 class="card-title">{{ pizza.name }}</h1>
+            <p class="card-text">{{ pizza.description }}</p>
+            <p class="fw-bold">Prijs: €{{ pizza.price|number_format(2, ',', '.') }}</p>
+            <a href="{{ path('order_cart', {'id': pizza.id}) }}" class="btn btn-success">Toevoegen aan winkelwagen</a>
+        </div>
+    </div>
+{% endblock %}
