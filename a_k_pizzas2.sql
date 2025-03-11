@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 05 mrt 2025 om 12:57
+-- Gegenereerd op: 11 mrt 2025 om 12:58
 -- Serverversie: 10.4.32-MariaDB
 -- PHP-versie: 8.2.12
 
@@ -34,6 +34,16 @@ CREATE TABLE `category` (
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `category`
+--
+
+INSERT INTO `category` (`id`, `name`) VALUES
+(1, 'Vlees'),
+(2, 'Vegetarisch'),
+(3, 'Vis'),
+(4, 'Specials');
+
 -- --------------------------------------------------------
 
 --
@@ -51,7 +61,9 @@ CREATE TABLE `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20250305111935', '2025-03-05 12:19:38', 631);
+('DoctrineMigrations\\Version20250305111935', '2025-03-05 12:19:38', 631),
+('DoctrineMigrations\\Version20250311110238', '2025-03-11 12:02:49', 118),
+('DoctrineMigrations\\Version20250311114359', '2025-03-11 12:44:08', 20);
 
 -- --------------------------------------------------------
 
@@ -78,8 +90,7 @@ CREATE TABLE `messenger_messages` (
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `status` varchar(20) NOT NULL,
-  `created_at` datetime NOT NULL
+  `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -105,10 +116,48 @@ CREATE TABLE `pizza` (
   `id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `description` longtext NOT NULL,
+  `description` longtext DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
   `image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `pizza`
+--
+
+INSERT INTO `pizza` (`id`, `category_id`, `name`, `description`, `price`, `image`) VALUES
+(1, 1, 'BBQ Chicken', 'Kip met BBQ saus', 12.50, 'bbq-chicken.jpg'),
+(2, 1, 'Buffalo Chicken', 'Pittige kip', 13.00, 'buffalo-chicken.jpg'),
+(3, 1, 'Ham & Bacon', 'Ham en spek', 11.50, 'ham-bacon.jpg'),
+(4, 1, 'Hot Pepperoni', 'Extra pittige pepperoni', 11.50, 'hot-pepperoni.jpg'),
+(5, 1, 'Salami', 'Italiaanse salami', 11.00, 'salami.jpg'),
+(6, 1, 'Tandoori', 'Tandoori kip met kruiden', 13.50, 'tandoori.jpg'),
+(7, 1, 'Spicy Meat', 'Mix van pittig vlees', 14.00, 'spicy-meat.jpg'),
+(8, 1, 'Mexican Fire', 'Pittige Mexicaanse pizza', 12.50, 'mexican-fire.jpg'),
+(9, 2, 'Margherita', 'Tomaat en mozzarella', 10.00, 'margherita.jpg'),
+(10, 2, 'Four Cheese', 'Vier soorten kaas', 13.00, 'four-cheese.jpg'),
+(11, 2, 'Pesto Veggie', 'Pesto en groenten', 12.00, 'pesto-veggie.jpg'),
+(12, 2, 'Spinazie Ricotta', 'Spinazie en ricotta', 12.50, 'spinazie-ricotta.jpg'),
+(13, 2, 'Truffle Pizza', 'Truffel en kaas', 15.50, 'truffle-pizza.jpg'),
+(14, 2, 'Caprese', 'Tomaat, basilicum en mozzarella', 11.50, 'caprese.jpg'),
+(15, 2, 'Black Garlic', 'Zwarte knoflook en groenten', 14.00, 'black-garlic.jpg'),
+(16, 2, 'Flaming Veggie', 'Pittige groenten', 13.00, 'flaming-veggie.jpg'),
+(17, 3, 'Seafood', 'Zeevruchten', 14.00, 'seafood-pizza.jpg'),
+(18, 3, 'Smoked Salmon', 'Gerookte zalm', 15.00, 'salami.jpg'),
+(19, 3, 'Tuna Special', 'Tonijn met rode ui', 13.50, 'spicy.jpg'),
+(20, 3, 'Anchovy Deluxe', 'Ansjovis en kappertjes', 14.50, 'special.jpg'),
+(21, 3, 'Garlic Shrimp', 'Knoflook garnalen', 16.00, 'seafood-pizza.jpg'),
+(22, 3, 'Pesto Fish', 'Pesto en vis', 13.00, 'pesto-veggie.jpg'),
+(23, 3, 'Spicy Prawn', 'Pittige garnalen', 14.00, 'spicy.jpg'),
+(24, 3, 'Sambal Chicken', 'Pittige kip met sambal', 13.50, 'sambal-chicken.jpg'),
+(25, 4, 'Inferno', 'Extra pittige pizza', 15.00, 'inferno.jpg'),
+(26, 4, 'Nutella Pizza', 'Chocolade topping', 10.00, 'nutella.jpg'),
+(27, 4, 'Mushroom Deluxe', 'Paddenstoelen mix', 13.50, 'mushroom-deluxe.jpg'),
+(28, 4, 'Quattro Formaggi', 'Vier kazen', 14.50, 'quattro-formaggi.jpg'),
+(29, 4, 'Spicy Margherita', 'Pittige variant van de klassieke pizza', 12.00, 'spicy-margherita.jpg'),
+(30, 4, 'Deluxe Vlees', 'Mix van vlees met extra kaas', 14.00, 'deluxe-vlees.jpg'),
+(31, 4, 'Vegan Special', 'Volledig plantaardige pizza', 13.50, 'vegan-special.jpg'),
+(32, 4, 'Special Edition', 'Limited edition smaak', 16.00, 'special.jpg');
 
 -- --------------------------------------------------------
 
@@ -185,7 +234,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT voor een tabel `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT voor een tabel `messenger_messages`
@@ -209,7 +258,7 @@ ALTER TABLE `order_item`
 -- AUTO_INCREMENT voor een tabel `pizza`
 --
 ALTER TABLE `pizza`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT voor een tabel `user`

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pizza Categorieën{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Pizza Categorieën</h1>
+    <div class="row">
+        {% for category in categories %}
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <a href="{{ path('pizza_category', {'id': category.id}) }}" class="btn btn-primary">Bekijk {{ category.name }}</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

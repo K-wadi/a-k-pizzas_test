@@ -16,7 +16,7 @@ class Pizza
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: "text", nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: "decimal", precision: 10, scale: 2)]
@@ -50,7 +50,7 @@ class Pizza
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
         return $this;
@@ -89,4 +89,5 @@ class Pizza
         return $this;
     }
 }
+
 

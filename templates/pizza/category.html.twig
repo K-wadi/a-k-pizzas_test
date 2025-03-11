@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pizza Menu{% endblock %}
+{% block title %}Pizza's in {{ category.name }}{% endblock %}
 
 {% block content %}
-    <h1 class="mb-4">Onze Pizza's</h1>
+    <h1 class="mb-4">Pizza's in de categorie {{ category.name }}</h1>
     <div class="row">
         {% for pizza in pizzas %}
             <div class="col-md-4 mb-3">
@@ -19,4 +19,5 @@
             </div>
         {% endfor %}
     </div>
+    <a href="{{ path('pizza_categories') }}" class="btn btn-secondary mt-3">Terug naar categorieën</a>
 {% endblock %}

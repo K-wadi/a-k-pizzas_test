@@ -2,22 +2,36 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}A&K Pizza's{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="bg-dark text-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
     <div class="container">
-        <a class="navbar-brand" href="{{ path('pizza_index') }}">A&K Pizza's</a>
-        <div class="collapse navbar-collapse">
+        <a class="navbar-brand" href="{{ path('pizza_index') }}">
+            <img src="{{ asset('img/logo.png') }}" alt="A&K Pizza" width="50" class="me-2">
+            A&K Pizza's
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{{ path('order_cart') }}">🛒 Winkelwagen</a></li>
-                {% if app.user %}
-                    <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Uitloggen</a></li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Inloggen</a></li>
-                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('pizza_index') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('pizza_categories') }}">Categorieën</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('order_cart') }}">Winkelwagen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-light text-dark px-3" href="{{ path('app_login') }}">Login</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -27,8 +41,13 @@
     {% block content %}{% endblock %}
 </div>
 
-<footer class="bg-dark text-light text-center py-3 mt-5">
-    <p>&copy; 2024 A&K Pizza's</p>
+<footer class="mt-5">
+    <div class="container text-center">
+        <p>&copy; 2025 A&K Pizza's - De lekkerste pizza's online!</p>
+    </div>
 </footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@ class OrderItem
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: "orderItems")]
+    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $order = null;
 
@@ -21,8 +21,8 @@ class OrderItem
     #[ORM\JoinColumn(nullable: false)]
     private ?Pizza $pizza = null;
 
-    #[ORM\Column(type: "integer")]
-    private ?int $quantity = null;
+    #[ORM\Column]
+    private int $quantity = 1;
 
     public function getId(): ?int
     {
@@ -51,7 +51,7 @@ class OrderItem
         return $this;
     }
 
-    public function getQuantity(): ?int
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
@@ -62,4 +62,3 @@ class OrderItem
         return $this;
     }
 }
-
