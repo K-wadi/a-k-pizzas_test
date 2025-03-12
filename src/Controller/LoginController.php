@@ -17,13 +17,13 @@ class LoginController extends AbstractController
             return $this->redirectToRoute('pizza_index');
         }
 
-        return $this->render('security/login.html.twig', [
+        return $this->render('Security/login.html.twig', [
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError(),
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout')]
+    #[Route('/logout', name: 'app_logout', methods: ['GET'])]
     public function logout(): void
     {
         // Symfony handelt het uitloggen automatisch af

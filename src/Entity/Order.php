@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
-#[ORM\Table(name: '`order`')]
 class Order
 {
     #[ORM\Id]
@@ -16,19 +15,23 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "orders")]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $status = 'To Do';
+    #[ORM\Column(type: "datetime")]
+    private \DateTimeInterface $createdAt;
 
-    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderItem::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: "order", targetEntity: OrderItem::class, cascade: ["persist", "remove"])]
     private Collection $orderItems;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = "To Do";
 
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -47,20 +50,17 @@ class Order
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getCreatedAt(): \DateTimeInterface
     {
-        return $this->status;
+        return $this->createdAt;
     }
 
-    public function setStatus(string $status): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
-        $this->status = $status;
+        $this->createdAt = $createdAt;
         return $this;
     }
 
-    /**
-     * @return Collection<int, OrderItem>
-     */
     public function getOrderItems(): Collection
     {
         return $this->orderItems;
@@ -69,21 +69,20 @@ class Order
     public function addOrderItem(OrderItem $orderItem): static
     {
         if (!$this->orderItems->contains($orderItem)) {
-            $this->orderItems->add($orderItem);
+            $this->orderItems[] = $orderItem;
             $orderItem->setOrder($this);
         }
-
         return $this;
     }
 
-    public function removeOrderItem(OrderItem $orderItem): static
+    public function getStatus(): ?string
     {
-        if ($this->orderItems->removeElement($orderItem)) {
-            if ($orderItem->getOrder() === $this) {
-                $orderItem->setOrder(null);
-            }
-        }
+        return $this->status;
+    }
 
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
         return $this;
     }
 }

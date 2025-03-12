@@ -10,10 +10,6 @@ security:
                 property: email
 
     firewalls:
-        dev:
-            pattern: ^/_(profiler|wdt)
-            security: false
-
         login:
             pattern: ^/login
             stateless: false
@@ -22,20 +18,23 @@ security:
                 login_path: app_login
                 check_path: app_login
                 default_target_path: pizza_index
-                always_use_default_target_path: false  # Belangrijk: Zorgt ervoor dat redirect werkt
-                use_referer: true  # Als je van een pagina komt, ga je na inloggen daarheen
-
+                use_referer: true
+                username_parameter: email  # 🔥 Zorg dat dit "email" is en niet "_username"
+                password_parameter: password
+                enable_csrf: true
+                csrf_parameter: _csrf_token
+                csrf_token_id: authenticate
         main:
             lazy: true
             provider: app_user_provider
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: pizza_index
-                use_referer: true  # Hierdoor word je teruggestuurd naar de vorige pagina
+                use_referer: true  # Voorkomt redirect naar /pizza/
+                enable_csrf: true  # CSRF-bescherming aanzetten
             logout:
-                path: app_logout
-                target: app_login
+                path: /logout
+
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
