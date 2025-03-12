@@ -81,17 +81,12 @@ class OrderController extends AbstractController
     #[Route('/order/history', name: 'order_history')]
     public function history(OrderRepository $orderRepository): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
-        }
-
         $orders = $orderRepository->findBy(['user' => $this->getUser()], ['createdAt' => 'DESC']);
 
         return $this->render('order/history.html.twig', [
             'orders' => $orders,
         ]);
     }
-
 
     #[Route('/update/{id}/{status}', name: 'order_update')]
     public function updateOrder(int $id, string $status, OrderRepository $orderRepository, EntityManagerInterface $entityManager): Response

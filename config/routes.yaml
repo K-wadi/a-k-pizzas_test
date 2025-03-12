@@ -51,6 +51,10 @@ order_checkout:
     controller: App\Controller\OrderController::checkout
     methods: GET
 
+order_history:
+    path: /order/history
+    controller: App\Controller\OrderController::history
+
 app_login:
     path: /login
     controller: App\Controller\LoginController::login
