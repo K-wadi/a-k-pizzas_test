@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welkom bij A&K Pizza's{% endblock %}
+
+{% block content %}
+    <div class="container text-center mt-5">
+        <h1>Welkom bij A&K Pizza's</h1>
+        <p>Ontdek onze heerlijke pizza's en bestel direct!</p>
+        <a href="{{ path('pizza_categories') }}" class="btn btn-primary">Bekijk Categorieën</a>
+    </div>
+{% endblock %}

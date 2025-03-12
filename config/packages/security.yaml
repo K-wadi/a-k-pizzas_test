@@ -17,26 +17,29 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
-                default_target_path: pizza_index
+                default_target_path: pizza_categories  # 🔥 Correcte redirect na login
                 use_referer: true
                 username_parameter: email  # 🔥 Zorg dat dit "email" is en niet "_username"
                 password_parameter: password
                 enable_csrf: true
                 csrf_parameter: _csrf_token
                 csrf_token_id: authenticate
+
         main:
             lazy: true
             provider: app_user_provider
             form_login:
                 login_path: app_login
                 check_path: app_login
-                use_referer: true  # Voorkomt redirect naar /pizza/
-                enable_csrf: true  # CSRF-bescherming aanzetten
+                default_target_path: pizza_categories  # 🔥 Dit voorkomt redirect naar /pizza/
+                use_referer: true  # 🔥 Gebruiker gaat terug naar vorige pagina
+                enable_csrf: true
             logout:
-                path: /logout
-
+                path: app_logout
+                target: app_login
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/baker, roles: ROLE_BAKER }
         - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/order/history, roles: ROLE_USER }

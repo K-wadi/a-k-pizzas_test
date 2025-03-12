@@ -1,3 +1,67 @@
+home:
+    path: /
+    controller: App\Controller\HomeController::index
+    methods: GET
+
 controllers:
     resource: ../src/Controller/
     type: attribute
+
+kernel:
+    resource: ../src/Kernel.php
+    type: attribute
+
+pizza_index:
+    path: /pizza/
+    controller: App\Controller\PizzaController::index
+    methods: GET
+
+pizza_categories:
+    path: /pizza/categories
+    controller: App\Controller\PizzaController::categories
+    methods: GET
+
+pizza_category:
+    path: /pizza/category/{id}
+    controller: App\Controller\PizzaController::category
+    methods: GET
+
+pizza_show:
+    path: /pizza/{id}
+    controller: App\Controller\PizzaController::show
+    methods: GET
+
+order_cart:
+    path: /order/cart
+    controller: App\Controller\OrderController::cart
+    methods: GET
+
+order_add:
+    path: /order/add/{id}
+    controller: App\Controller\OrderController::addToCart
+    methods: GET
+
+order_remove:
+    path: /order/remove/{id}
+    controller: App\Controller\OrderController::removeFromCart
+    methods: GET
+
+order_checkout:
+    path: /order/checkout
+    controller: App\Controller\OrderController::checkout
+    methods: GET
+
+app_login:
+    path: /login
+    controller: App\Controller\LoginController::login
+    methods: [GET, POST]
+
+app_register:
+    path: /register
+    controller: App\Controller\RegisterController::register
+    methods: [GET, POST]
+
+app_logout:
+    path: /logout
+    controller: App\Controller\LoginController::logout
+    methods: GET

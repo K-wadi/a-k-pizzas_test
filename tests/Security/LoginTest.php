@@ -79,10 +79,12 @@ class LoginTest extends WebTestCase
         $form = $crawler->selectButton('Inloggen')->form([
             'email' => 'testuser@example.com',
             'password' => 'testpassword',
-            '_csrf_token' => 'wrong-token' // Foute token
+            '_csrf_token' => 'invalid-token' // Fout CSRF-token
         ]);
 
         $client->submit($form);
-        $this->assertResponseStatusCodeSame(403); // CSRF moet in fout eindigen
+        $this->assertResponseStatusCodeSame(302); // Nu correct, omdat Symfony de gebruiker redirect naar /login
+        $this->assertResponseRedirects('/login');
     }
+
 }

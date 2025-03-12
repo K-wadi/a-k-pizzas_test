@@ -9,24 +9,20 @@
                 <h2 class="text-center">Inloggen</h2>
                 <form method="post" action="{{ path('app_login') }}">
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    {% if error %}
-                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'Security') }}</div>
-                    {% endif %}
 
                     <div class="mb-3">
-                        <label for="email" class="form-label">E-mailadres</label>
-                        <input type="email" name="email" id="email" class="form-control" required autofocus>
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="password" class="form-label">Wachtwoord</label>
-                        <input type="password" name="password" id="password" class="form-control" required>
+                        <label for="password">Wachtwoord</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
                     </div>
 
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                    <button class="btn btn-primary w-100" type="submit">Inloggen</button>
+                    <button type="submit" class="btn btn-primary">Inloggen</button>
                 </form>
+
 
                 <p class="text-center mt-3">
                     Nog geen account? <a href="{{ path('app_register') }}">Registreer hier</a>

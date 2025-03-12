@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/pizza')]
 class PizzaController extends AbstractController
 {
-    #[Route('/', name: 'pizza_index')]
+    #[Route('/pizza', name: 'pizza_index')]
     public function index(PizzaRepository $pizzaRepository): Response
     {
         return $this->render('pizza/index.html.twig', [
@@ -21,7 +21,7 @@ class PizzaController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}', name: 'pizza_show')]
+    #[Route('/pizza/{id}', name: 'pizza_show')]
     public function show(int $id, PizzaRepository $pizzaRepository): Response
     {
         $pizza = $pizzaRepository->find($id);
@@ -35,7 +35,7 @@ class PizzaController extends AbstractController
         ]);
     }
 
-    #[Route('/categories', name: 'pizza_categories')]
+    #[Route('/pizza/categories', name: 'pizza_categories')]
     public function categories(CategoryRepository $categoryRepository): Response
     {
         $categories = $categoryRepository->findAll();
@@ -45,7 +45,7 @@ class PizzaController extends AbstractController
         ]);
     }
 
-    #[Route('/category/{id}', name: 'pizza_category')]
+    #[Route('/pizza/category/{id}', name: 'pizza_category')]
     public function category(int $id, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->find($id);

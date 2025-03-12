@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/order')]
 class OrderController extends AbstractController
 {
-    #[Route('/cart', name: 'order_cart')]
+    #[Route('/order/cart', name: 'order_cart')]
     public function cart(Request $request, EntityManagerInterface $entityManager): Response
     {
         $cart = $request->getSession()->get('cart', []);
@@ -33,7 +33,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/checkout', name: 'order_checkout')]
+    #[Route('/order/checkout', name: 'order_checkout')]
     public function checkout(Request $request, EntityManagerInterface $entityManager): Response
     {
         // Controleer of de gebruiker is ingelogd
@@ -78,15 +78,20 @@ class OrderController extends AbstractController
         return $this->render('order/success.html.twig');
     }
 
-    #[Route('/orders', name: 'order_history')]
+    #[Route('/order/history', name: 'order_history')]
     public function history(OrderRepository $orderRepository): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $orders = $orderRepository->findBy(['user' => $this->getUser()], ['createdAt' => 'DESC']);
 
         return $this->render('order/history.html.twig', [
             'orders' => $orders,
         ]);
     }
+
 
     #[Route('/update/{id}/{status}', name: 'order_update')]
     public function updateOrder(int $id, string $status, OrderRepository $orderRepository, EntityManagerInterface $entityManager): Response
@@ -108,7 +113,7 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('baker_dashboard');
     }
 
-    #[Route('/add/{id}', name: 'order_add')]
+    #[Route('/order/add/{id}', name: 'order_add')]
     public function addToCart(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $session = $request->getSession();
@@ -132,7 +137,7 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('order_cart');
     }
 
-    #[Route('/remove/{id}', name: 'order_remove')]
+    #[Route('/order/remove/{id}', name: 'order_remove')]
     public function removeFromCart(int $id, Request $request): Response
     {
         $session = $request->getSession();
