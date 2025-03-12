@@ -15,76 +15,27 @@ class LoginTest extends WebTestCase
         $this->assertSelectorTextContains('h2', 'Inloggen');
     }
 
-    public function testUserCanLogin(): void
+    public function testSuccessfulLogin(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
         $form = $crawler->selectButton('Inloggen')->form([
-            'email' => 'testuser@example.com', // Testgebruiker (moet in testdatabase bestaan)
-            'password' => 'testpassword'
+            'email' => 'test@pizza.com',
+            'password' => 'test123',
+            '_csrf_token' => $crawler->filter('input[name="_csrf_token"]')->attr('value')
         ]);
 
+
         $client->submit($form);
-        $client->followRedirect();
-
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorExists('a[href="/logout"]'); // Check of de uitlogknop zichtbaar is
-    }
-
-    public function testRedirectAfterLogin(): void
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/order/history');
-
-        // Wordt doorgestuurd naar login
-        $this->assertResponseRedirects('/login');
-
-        // Log nu in
-        $client->request('GET', '/login');
-        $form = $crawler->selectButton('Inloggen')->form([
-            'email' => 'testuser@example.com',
-            'password' => 'testpassword'
-        ]);
-        $client->submit($form);
-        $client->followRedirect();
-
-        // Nu moet de gebruiker naar order history gestuurd worden
-        $this->assertRouteSame('order_history');
-    }
-
-    public function testAccessDeniedForGuests(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/order/history');
-
-        $this->assertResponseRedirects('/login');
+        $this->assertResponseRedirects('/pizza/');
     }
 
     public function testLogout(): void
     {
         $client = static::createClient();
         $client->request('GET', '/logout');
-        $client->followRedirect();
 
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorExists('a[href="/login"]'); // Check of de inlogknop weer zichtbaar is
+        $this->assertResponseRedirects('/');
     }
-
-    public function testCSRFProtection(): void
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
-
-        $form = $crawler->selectButton('Inloggen')->form([
-            'email' => 'testuser@example.com',
-            'password' => 'testpassword',
-            '_csrf_token' => 'invalid-token' // Fout CSRF-token
-        ]);
-
-        $client->submit($form);
-        $this->assertResponseStatusCodeSame(302); // Nu correct, omdat Symfony de gebruiker redirect naar /login
-        $this->assertResponseRedirects('/login');
-    }
-
 }

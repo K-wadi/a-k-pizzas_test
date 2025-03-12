@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container mt-4 text-center">
+        <h2>Bedankt voor je bestelling!</h2>
+        <p>Je bestelling is succesvol geplaatst.</p>
+        <a href="{{ path('pizza_index') }}" class="btn btn-primary">Terug naar de winkel</a>
+    </div>
+{% endblock %}

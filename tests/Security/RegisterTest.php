@@ -1,31 +1,29 @@
 <?php
 
-namespace App\Tests\Functional;
+namespace App\Tests\Security;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class FullProjectTest extends WebTestCase
+class RegisterTest extends WebTestCase
 {
-    public function testHomePageLoads(): void
+    public function testRegisterPageLoads(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/');
+        $crawler = $client->request('GET', '/register');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'A&K Pizza\'s');
+        $this->assertSelectorTextContains('h2', 'Registreren');
     }
 
-    public function testUserRegistration(): void
+    public function testSuccessfulRegistration(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/register');
 
         $form = $crawler->selectButton('Registreren')->form([
             'registration_form[email]' => 'newuser@pizza.com',
-            'registration_form[plainPassword][first]' => 'password123',
-            'registration_form[plainPassword][second]' => 'password123'
+            'registration_form[plainPassword]' => 'password123'
         ]);
-
 
         $client->submit($form);
         $this->assertResponseRedirects('/login');

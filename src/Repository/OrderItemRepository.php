@@ -8,6 +8,11 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<OrderItem>
+ *
+ * @method OrderItem|null find($id, $lockMode = null, $lockVersion = null)
+ * @method OrderItem|null findOneBy(array $criteria, array $orderBy = null)
+ * @method OrderItem[]    findAll()
+ * @method OrderItem[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class OrderItemRepository extends ServiceEntityRepository
 {
@@ -16,28 +21,28 @@ class OrderItemRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderItem::class);
     }
 
-    //    /**
-    //     * @return OrderItem[] Returns an array of OrderItem objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('o')
-    //            ->andWhere('o.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('o.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Zoek alle items voor een specifieke bestelling.
+     */
+    public function findByOrder(int $orderId): array
+    {
+        return $this->createQueryBuilder('oi')
+            ->andWhere('oi.order = :orderId')
+            ->setParameter('orderId', $orderId)
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?OrderItem
-    //    {
-    //        return $this->createQueryBuilder('o')
-    //            ->andWhere('o.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Verwijdert alle items van een specifieke bestelling.
+     */
+    public function removeItemsByOrder(int $orderId): void
+    {
+        $this->createQueryBuilder('oi')
+            ->delete()
+            ->where('oi.order = :orderId')
+            ->setParameter('orderId', $orderId)
+            ->getQuery()
+            ->execute();
+    }
 }

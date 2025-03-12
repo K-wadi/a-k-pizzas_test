@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 11 mrt 2025 om 12:58
+-- Gegenereerd op: 12 mrt 2025 om 12:55
 -- Serverversie: 10.4.32-MariaDB
 -- PHP-versie: 8.2.12
 
@@ -63,7 +63,8 @@ CREATE TABLE `doctrine_migration_versions` (
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20250305111935', '2025-03-05 12:19:38', 631),
 ('DoctrineMigrations\\Version20250311110238', '2025-03-11 12:02:49', 118),
-('DoctrineMigrations\\Version20250311114359', '2025-03-11 12:44:08', 20);
+('DoctrineMigrations\\Version20250311114359', '2025-03-11 12:44:08', 20),
+('DoctrineMigrations\\Version20250312103743', '2025-03-12 11:37:48', 105);
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,8 @@ CREATE TABLE `messenger_messages` (
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `status` varchar(50) NOT NULL
+  `status` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -171,6 +173,14 @@ CREATE TABLE `user` (
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
+(1, 'khaled@roc.nl', '[]', '$2y$13$GKu8Tais2/iiiWIIwlFHouDKIJ6AQ0sooT1SX2zXck3438s6/cR/6'),
+(3, 'khaled@rocc.nl', '[]', '$2y$13$BOqwGecvn8rFKD7An6Km0uGITsDHR9tLpvrXrN/18z0ACBsAQBaHe');
 
 --
 -- Indexen voor geëxporteerde tabellen
@@ -264,7 +274,7 @@ ALTER TABLE `pizza`
 -- AUTO_INCREMENT voor een tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Beperkingen voor geëxporteerde tabellen
