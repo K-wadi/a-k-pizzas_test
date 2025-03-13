@@ -2,14 +2,63 @@
 
 {% block title %}{{ pizza.name }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+{% endblock %}
+
 {% block content %}
-    <div class="card">
-        <img src="{{ asset('img/' ~ pizza.image) }}" class="card-img-top" alt="{{ pizza.name }}">
-        <div class="card-body">
-            <h1 class="card-title">{{ pizza.name }}</h1>
-            <p class="card-text">{{ pizza.description }}</p>
-            <p class="fw-bold">Prijs: €{{ pizza.price|number_format(2, ',', '.') }}</p>
-            <a href="{{ path('order_add', {'id': pizza.id}) }}" class="btn btn-success">Toevoegen aan winkelwagen</a>
+    <div class="container pizza-container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0 rounded-lg overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-md-6">
+                            <img src="{{ asset('img/' ~ pizza.image) }}" class="img-fluid rounded-start" alt="{{ pizza.name }}">
+                        </div>
+                        <div class="col-md-6 d-flex flex-column">
+                            <div class="card-body d-flex flex-column h-100">
+                                <h1 class="card-title fw-bold border-bottom pb-2">{{ pizza.name }}</h1>
+                                <span class="badge bg-success mb-3">Populaire keuze</span>
+                                <p class="card-text text-muted">{{ pizza.description }}</p>
+
+                                <h5 class="fw-bold mt-3">Ingrediënten</h5>
+                                <p class="text-muted">Tomatensaus, mozzarella, {# Voeg dynamisch ingrediënten toe #}</p>
+
+                                <div class="mt-auto">
+                                    <h4 class="fw-bold text-primary mb-3">€{{ pizza.price|number_format(2, ',', '.') }}</h4>
+                                    <a href="{{ path('order_add', {'id': pizza.id}) }}" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-shopping-cart me-2"></i> Toevoegen aan winkelwagen
+                                    </a>
+                                    <div class="text-center mt-3">
+                                        <a href="{{ path('pizza_index') }}" class="text-decoration-none text-secondary">
+                                            <i class="fas fa-arrow-left me-2"></i> Terug naar menu
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderBtn = document.querySelector('.btn-primary');
+            if (orderBtn) {
+                orderBtn.addEventListener('mouseover', function() {
+                    this.innerHTML = '<i class="fas fa-check me-2"></i> Bestel nu';
+                });
+                orderBtn.addEventListener('mouseout', function() {
+                    this.innerHTML = '<i class="fas fa-shopping-cart me-2"></i> Toevoegen aan winkelwagen';
+                });
+            }
+        });
+    </script>
 {% endblock %}

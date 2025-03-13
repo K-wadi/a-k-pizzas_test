@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2025 at 05:13 PM
+-- Generation Time: Mar 13, 2025 at 05:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `a_k_pizzas2`
+-- Database: `a_k_pizzas2_test`
 --
-CREATE DATABASE IF NOT EXISTS `a_k_pizzas2` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `a_k_pizzas2`;
+CREATE DATABASE IF NOT EXISTS `a_k_pizzas2_test` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `a_k_pizzas2_test`;
 
 -- --------------------------------------------------------
 
@@ -61,9 +61,9 @@ CREATE TABLE `doctrine_migration_versions` (
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20250305111935', '2025-03-12 20:41:30', 280),
-('DoctrineMigrations\\Version20250311110238', '2025-03-12 20:41:31', 25),
-('DoctrineMigrations\\Version20250311114359', '2025-03-12 20:41:31', 4);
+('DoctrineMigrations\\Version20250305111935', '2025-03-12 03:11:10', 182),
+('DoctrineMigrations\\Version20250311110238', '2025-03-12 03:11:10', 19),
+('DoctrineMigrations\\Version20250311114359', '2025-03-12 03:11:10', 4);
 
 -- --------------------------------------------------------
 
@@ -177,7 +177,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
-(1, 'khaledwadi747@gmail.com', '[]', '$2y$13$AqN5xEbKw85xuh/4pq2U5.e039Bxox6FB1WxkK2uELk480pk0f1By');
+(1, 'newuser@example.com', '[]', '$2y$13$cJgoC2Hx.zkFs6PH.tLCV.cK4rXRxcHZHyXy6IKArGIIQUEUzNRt6'),
+(8, 'newuser@pizza.com', '[]', '$2y$13$fUC/.n2G.jYJwDD1qA/AiuDeeUVM6V/RN88ZtkDM3dd8gElad0St6');
 
 --
 -- Indexes for dumped tables
@@ -271,7 +272,7 @@ ALTER TABLE `pizza`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables

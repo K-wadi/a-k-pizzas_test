@@ -3,17 +3,25 @@
 {% block title %}Pizza Categorieën{% endblock %}
 
 {% block content %}
-    <h1 class="mb-4">Pizza Categorieën</h1>
-    <div class="row">
-        {% for category in categories %}
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">{{ category.name }}</h5>
-                        <a href="{{ path('pizza_category', {'id': category.id}) }}" class="btn btn-primary">Bekijk {{ category.name }}</a>
+    <div class="container py-5">
+        <h1 class="text-center fw-bold mb-4 text-uppercase text-primary">Pizza Categorieën</h1>
+        <p class="text-center text-muted mb-5">Ontdek onze verschillende categorieën en vind jouw perfecte pizza!</p>
+        <div class="row g-4 justify-content-center">
+            {% for category in categories %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card shadow-lg border-0 h-100 overflow-hidden">
+                        <div class="card-body text-center d-flex flex-column justify-content-center align-items-center">
+                            <div class="icon-box mb-3">
+                                <i class="fas fa-pizza-slice fa-3x text-danger"></i>
+                            </div>
+                            <h5 class="card-title fw-bold text-dark">{{ category.name }}</h5>
+                            <a href="{{ path('pizza_category', {'id': category.id}) }}" class="btn btn-danger btn-sm mt-3 px-4 py-2 shadow-sm">
+                                Bekijk {{ category.name }} <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

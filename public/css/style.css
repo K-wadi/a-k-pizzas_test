@@ -1,36 +1,294 @@
+/* Main Styles */
+:root {
+    --primary-red: #e60000;
+    --dark-red: #b30000;
+    --black: #1a1a1a;
+    --light-gray: #f5f5f5;
+    --white: #ffffff;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--light-gray);
+    color: var(--black);
 }
 
-.navbar-brand img {
-    border-radius: 50%;
+/* Header Styling */
+h1 {
+    color: var(--primary-red);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-red);
+    margin-bottom: 30px !important;
 }
 
+/* Card Styling */
 .card {
-    background-color: #222;
-    color: white;
-    border: 1px solid #ff0000;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
-.card img {
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
     height: 200px;
     object-fit: cover;
 }
 
-.btn-primary {
-    background-color: #ff0000;
-    border-color: #ff0000;
+.card-body {
+    padding: 1.5rem;
+    border-top: 3px solid var(--primary-red);
 }
 
-.btn-primary:hover {
-    background-color: #cc0000;
-    border-color: #cc0000;
+.card-title {
+    color: var(--black);
+    font-weight: 700;
+    font-size: 1.4rem;
 }
 
-footer {
-    background-color: #000;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-    margin-top: 50px;
+.card-text {
+    color: #555;
+    margin-bottom: 15px;
+    min-height: 50px;
+}
+
+/* Price Styling */
+.price {
+    font-size: 1.3rem;
+    color: var(--primary-red);
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Button Styling */
+.btn-pizza {
+    background-color: var(--primary-red);
+    border: none;
+    color: var(--white);
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-pizza:hover {
+    background-color: var(--dark-red);
+    box-shadow: 0 3px 10px rgba(230, 0, 0, 0.3);
+    color: var(--white);
+}
+
+/* Pizza Container */
+.pizza-container {
+    padding: 30px 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 180px;
+    }
+
+    /* Pizza Detail Styling */
+    .pizza-detail-card {
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        margin-bottom: 40px;
+    }
+
+    .pizza-detail-img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .pizza-detail-header {
+        position: relative;
+    }
+
+    .pizza-detail-header h1 {
+        text-align: left;
+        margin-top: 0;
+        margin-bottom: 10px;
+        text-transform: none;
+        letter-spacing: normal;
+        border-bottom: none;
+        padding-bottom: 5px;
+        font-size: 2.2rem;
+    }
+
+    .pizza-badge {
+        display: inline-block;
+        background-color: var(--primary-red);
+        color: white;
+        font-size: 0.8rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+
+    .pizza-description {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .pizza-ingredients h4 {
+        color: var(--black);
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .pizza-ingredients p {
+        color: #555;
+        font-size: 0.95rem;
+    }
+
+    .price-action-container {
+        background-color: var(--light-gray);
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    .price-action-container .price {
+        font-size: 1.8rem;
+        display: block;
+        text-align: center;
+    }
+
+    .btn-pizza.btn-lg {
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .back-link a {
+        color: var(--black);
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .back-link a:hover {
+        color: var(--primary-red);
+    }
+
+    /* Responsive aanpassingen */
+    @media (max-width: 768px) {
+        .pizza-detail-card .row {
+            flex-direction: column;
+        }
+
+        .pizza-detail-img {
+            height: 250px;
+        }
+
+        .pizza-detail-header h1 {
+            font-size: 1.8rem;
+        }
+    }
+    /* Category Page Styling */
+    .category-header {
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--primary-red);
+        margin-bottom: 30px;
+    }
+
+    .category-description {
+        color: #555;
+        font-size: 1.1rem;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+    .category-counter {
+        display: inline-block;
+        background-color: var(--black);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .category-tag {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background-color: var(--primary-red);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .empty-state {
+        background-color: var(--light-gray);
+        border-radius: 10px;
+        margin: 30px 0;
+    }
+
+    .empty-state i {
+        color: var(--primary-red);
+    }
+
+    .empty-state h3 {
+        color: var(--black);
+        margin-bottom: 10px;
+    }
+
+    .empty-state p {
+        color: #555;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .navigation-bar {
+        margin-top: 30px;
+    }
+
+    .btn-outline-pizza {
+        background-color: transparent;
+        border: 2px solid var(--primary-red);
+        color: var(--primary-red);
+        border-radius: 30px;
+        padding: 8px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-pizza:hover {
+        background-color: var(--primary-red);
+        color: white;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .category-counter {
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        .navigation-bar {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .navigation-bar a {
+            width: 100%;
+            text-align: center;
+        }
+    }
 }
