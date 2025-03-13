@@ -21,23 +21,10 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
-<<<<<<< HEAD
                 default_target_path: pizza_index
             logout:
                 path: app_logout
                 invalidate_session: true
-=======
-                username_parameter: email
-                password_parameter: password
-            logout:
-                path: app_logout
-                invalidate_session: true
-            remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 604800 # 1 week
-                path: /
-                always_remember_me: false
->>>>>>> 254bd6ab6d06322005dcff067fee00edb811fc85
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }

@@ -15,7 +15,7 @@ class LoginTest extends WebTestCase
         $this->assertSelectorTextContains('h2', 'Inloggen');
     }
 
-    public function testSuccessfulLogin(): void
+    public function testUserCanLogin(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
@@ -26,9 +26,7 @@ class LoginTest extends WebTestCase
             '_csrf_token' => $crawler->filter('input[name="_csrf_token"]')->attr('value')
         ]);
 
-
         $client->submit($form);
-<<<<<<< HEAD
         $this->assertTrue($client->getResponse()->isRedirect());
         $this->assertStringContainsString('/pizza/', $client->getResponse()->headers->get('Location'));
     }
@@ -41,16 +39,4 @@ class LoginTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isRedirect());
         $this->assertStringContainsString('/login', $client->getResponse()->headers->get('Location'));
     }
-=======
-        $this->assertResponseRedirects('/pizza/');
-    }
-
-    public function testLogout(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/logout');
-
-        $this->assertResponseRedirects('/');
-    }
->>>>>>> 254bd6ab6d06322005dcff067fee00edb811fc85
 }

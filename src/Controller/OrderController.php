@@ -9,14 +9,15 @@ use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/order')]
 class OrderController extends AbstractController
 {
     #[Route('/order/cart', name: 'order_cart')]
-    public function cart()
+    public function cart(Request $request, EntityManagerInterface $entityManager): Response
     {
-<<<<<<< HEAD
         $cart = $request->getSession()->get('cart', []);
         $pizzas = [];
 
@@ -105,48 +106,43 @@ class OrderController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('baker_dashboard');
-=======
-        $cart = $this->get('session')->get('cart', []);
-        return $this->render('order/cart.html.twig', ['cart' => $cart]);
->>>>>>> 254bd6ab6d06322005dcff067fee00edb811fc85
     }
 
     #[Route('/order/add/{id}', name: 'order_add')]
-    public function addToCart(Pizza $pizza, Request $request)
+    public function addToCart(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $cart = $this->get('session')->get('cart', []);
-        $cart[$pizza->getId()] = ($cart[$pizza->getId()] ?? 0) + 1;
-        $this->get('session')->set('cart', $cart);
+        $session = $request->getSession();
+        $cart = $session->get('cart', []);
+
+        // Controleer of de pizza bestaat
+        $pizza = $entityManager->getRepository(Pizza::class)->find($id);
+        if (!$pizza) {
+            throw $this->createNotFoundException('Pizza niet gevonden!');
+        }
+
+        // Voeg pizza toe aan winkelwagen
+        if (isset($cart[$id])) {
+            $cart[$id]++;
+        } else {
+            $cart[$id] = 1;
+        }
+
+        $session->set('cart', $cart);
+
         return $this->redirectToRoute('order_cart');
     }
 
-    #[Route('/order/checkout', name: 'order_checkout')]
-    public function checkout(EntityManagerInterface $em)
+    #[Route('/order/remove/{id}', name: 'order_remove')]
+    public function removeFromCart(int $id, Request $request): Response
     {
-        $cart = $this->get('session')->get('cart', []);
-        if (!$cart) return $this->redirectToRoute('pizza_index');
+        $session = $request->getSession();
+        $cart = $session->get('cart', []);
 
-        $order = new Order();
-        $order->setUser($this->getUser());
-        foreach ($cart as $pizzaId => $quantity) {
-            $pizza = $em->getRepository(Pizza::class)->find($pizzaId);
-            $orderItem = new OrderItem();
-            $orderItem->setPizza($pizza);
-            $orderItem->setQuantity($quantity);
-            $orderItem->setOrder($order);
-            $em->persist($orderItem);
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            $session->set('cart', $cart);
         }
 
-        $em->persist($order);
-        $em->flush();
-
-        $this->get('session')->remove('cart');
-        return $this->redirectToRoute('order_success');
-    }
-
-    #[Route('/order/success', name: 'order_success')]
-    public function success()
-    {
-        return $this->render('order/success.html.twig');
+        return $this->redirectToRoute('order_cart');
     }
 }

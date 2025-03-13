@@ -1,34 +1,38 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Winkelwagen{% endblock %}
+
 {% block content %}
-    <div class="container mt-4">
-        <h2>Winkelwagen</h2>
-        {% if cart %}
-            <table class="table">
-                <thead>
+    <h1>Winkelwagen</h1>
+
+    {% if cart is empty %}
+        <p>Je winkelwagen is leeg.</p>
+    {% else %}
+        <table class="table table-dark">
+            <thead>
+            <tr>
+                <th>Pizza</th>
+                <th>Prijs</th>
+                <th>Aantal</th>
+                <th>Totaal</th>
+                <th>Actie</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in cart %}
                 <tr>
-                    <th>Pizza</th>
-                    <th>Aantal</th>
-                    <th>Prijs</th>
-                    <th>Actie</th>
+                    <td>{{ item.pizza.name }}</td>
+                    <td>€{{ item.pizza.price|number_format(2, ',', '.') }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>€{{ (item.pizza.price * item.quantity)|number_format(2, ',', '.') }}</td>
+                    <td>
+                        <a href="{{ path('order_remove', {'id': item.pizza.id}) }}" class="btn btn-danger">Verwijderen</a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for id, quantity in cart %}
-                    <tr>
-                        <td>{{ pizzas[id].name }}</td>
-                        <td>{{ quantity }}</td>
-                        <td>€{{ (pizzas[id].price * quantity)|number_format(2, ',', '.') }}</td>
-                        <td>
-                            <a href="{{ path('order_remove', {id: id}) }}" class="btn btn-danger">Verwijderen</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <a href="{{ path('order_checkout') }}" class="btn btn-success">Afrekenen</a>
-        {% else %}
-            <p>Je winkelwagen is leeg.</p>
-        {% endif %}
-    </div>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('order_checkout') }}" class="btn btn-success">Afrekenen</a>
+    {% endif %}
 {% endblock %}

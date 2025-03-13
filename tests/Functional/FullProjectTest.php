@@ -26,7 +26,6 @@ class FullProjectTest extends WebTestCase
             'registration_form[plainPassword][second]' => 'password123'
         ]);
 
-<<<<<<< HEAD
         $client->submit($form);
         $this->assertTrue($client->getResponse()->isRedirect());
         $this->assertStringContainsString('/login', $client->getResponse()->headers->get('Location'));
@@ -73,10 +72,5 @@ class FullProjectTest extends WebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirect());
         $this->assertStringContainsString('/login', $client->getResponse()->headers->get('Location'));
-=======
-
-        $client->submit($form);
-        $this->assertResponseRedirects('/login');
->>>>>>> 254bd6ab6d06322005dcff067fee00edb811fc85
     }
 }
