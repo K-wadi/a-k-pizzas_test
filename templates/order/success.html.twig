@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bestelling Geslaagd{% endblock %}
+
+{% block content %}
+    <div class="container text-center mt-5">
+        <div class="alert alert-success p-4">
+            <h1 class="display-4">🎉 Bestelling Geslaagd!</h1>
+            <p class="lead">Bedankt voor je bestelling! We zijn druk bezig met de bereiding.</p>
+        </div>
+
+        <div class="card shadow-lg p-4 mt-4">
+            <h2 class="mb-3">Wat nu?</h2>
+            <p class="text-muted">Je ontvangt een bevestiging van je bestelling. Zodra je pizza klaar is, laten we het je weten!</p>
+
+            <div class="mt-4">
+                <a href="{{ path('pizza_index') }}" class="btn btn-primary btn-lg">Terug naar het menu 🍕</a>
+                <a href="{{ path('order_history') }}" class="btn btn-outline-secondary btn-lg">Bekijk je bestellingen 📜</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

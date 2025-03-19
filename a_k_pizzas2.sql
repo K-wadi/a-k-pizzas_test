@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2025 at 05:13 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Gegenereerd op: 19 mrt 2025 om 12:57
+-- Serverversie: 10.4.32-MariaDB
+-- PHP-versie: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -26,7 +26,7 @@ USE `a_k_pizzas2`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- Tabelstructuur voor tabel `category`
 --
 
 CREATE TABLE `category` (
@@ -35,7 +35,7 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `category`
+-- Gegevens worden geëxporteerd voor tabel `category`
 --
 
 INSERT INTO `category` (`id`, `name`) VALUES
@@ -47,7 +47,7 @@ INSERT INTO `category` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `doctrine_migration_versions`
+-- Tabelstructuur voor tabel `doctrine_migration_versions`
 --
 
 CREATE TABLE `doctrine_migration_versions` (
@@ -57,18 +57,20 @@ CREATE TABLE `doctrine_migration_versions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `doctrine_migration_versions`
+-- Gegevens worden geëxporteerd voor tabel `doctrine_migration_versions`
 --
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20250305111935', '2025-03-12 20:41:30', 280),
 ('DoctrineMigrations\\Version20250311110238', '2025-03-12 20:41:31', 25),
-('DoctrineMigrations\\Version20250311114359', '2025-03-12 20:41:31', 4);
+('DoctrineMigrations\\Version20250311114359', '2025-03-12 20:41:31', 4),
+('DoctrineMigrations\\Version20250319112204', '2025-03-19 12:22:12', 100),
+('DoctrineMigrations\\Version20250319113050', '2025-03-19 12:30:54', 56);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messenger_messages`
+-- Tabelstructuur voor tabel `messenger_messages`
 --
 
 CREATE TABLE `messenger_messages` (
@@ -84,19 +86,28 @@ CREATE TABLE `messenger_messages` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
+-- Tabelstructuur voor tabel `order`
 --
 
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `status` varchar(50) NOT NULL
+  `status` varchar(255) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `order`
+--
+
+INSERT INTO `order` (`id`, `status`, `customer_name`, `created_at`) VALUES
+(1, 'To Do', 'Gast', '2025-03-19 12:43:27'),
+(2, 'To Do', 'Gast', '2025-03-19 12:45:48');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order_item`
+-- Tabelstructuur voor tabel `order_item`
 --
 
 CREATE TABLE `order_item` (
@@ -106,10 +117,18 @@ CREATE TABLE `order_item` (
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `order_item`
+--
+
+INSERT INTO `order_item` (`id`, `order_id`, `pizza_id`, `quantity`) VALUES
+(1, 1, 1, 3),
+(2, 2, 4, 1);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pizza`
+-- Tabelstructuur voor tabel `pizza`
 --
 
 CREATE TABLE `pizza` (
@@ -122,7 +141,7 @@ CREATE TABLE `pizza` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `pizza`
+-- Gegevens worden geëxporteerd voor tabel `pizza`
 --
 
 INSERT INTO `pizza` (`id`, `category_id`, `name`, `description`, `price`, `image`) VALUES
@@ -159,44 +178,24 @@ INSERT INTO `pizza` (`id`, `category_id`, `name`, `description`, `price`, `image
 (31, 4, 'Vegan Special', 'Volledig plantaardige pizza', 13.50, 'vegan-special.jpg'),
 (32, 4, 'Special Edition', 'Limited edition smaak', 16.00, 'special.jpg');
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `user`
---
-
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `email` varchar(180) NOT NULL,
-  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
-  `password` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
-(1, 'khaledwadi747@gmail.com', '[]', '$2y$13$AqN5xEbKw85xuh/4pq2U5.e039Bxox6FB1WxkK2uELk480pk0f1By');
-
---
--- Indexes for dumped tables
+-- Indexen voor geëxporteerde tabellen
 --
 
 --
--- Indexes for table `category`
+-- Indexen voor tabel `category`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `doctrine_migration_versions`
+-- Indexen voor tabel `doctrine_migration_versions`
 --
 ALTER TABLE `doctrine_migration_versions`
   ADD PRIMARY KEY (`version`);
 
 --
--- Indexes for table `messenger_messages`
+-- Indexen voor tabel `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
   ADD PRIMARY KEY (`id`),
@@ -205,14 +204,13 @@ ALTER TABLE `messenger_messages`
   ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
 
 --
--- Indexes for table `order`
+-- Indexen voor tabel `order`
 --
 ALTER TABLE `order`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_F5299398A76ED395` (`user_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `order_item`
+-- Indexen voor tabel `order_item`
 --
 ALTER TABLE `order_item`
   ADD PRIMARY KEY (`id`),
@@ -220,78 +218,59 @@ ALTER TABLE `order_item`
   ADD KEY `IDX_52EA1F09D41D1D42` (`pizza_id`);
 
 --
--- Indexes for table `pizza`
+-- Indexen voor tabel `pizza`
 --
 ALTER TABLE `pizza`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_CFDD826F12469DE2` (`category_id`);
 
 --
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `UNIQ_IDENTIFIER_EMAIL` (`email`);
-
---
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT voor geëxporteerde tabellen
 --
 
 --
--- AUTO_INCREMENT for table `category`
+-- AUTO_INCREMENT voor een tabel `category`
 --
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `messenger_messages`
+-- AUTO_INCREMENT voor een tabel `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `order`
+-- AUTO_INCREMENT voor een tabel `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `order_item`
+-- AUTO_INCREMENT voor een tabel `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `pizza`
+-- AUTO_INCREMENT voor een tabel `pizza`
 --
 ALTER TABLE `pizza`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- Constraints for dumped tables
+-- Beperkingen voor geëxporteerde tabellen
 --
 
 --
--- Constraints for table `order`
---
-ALTER TABLE `order`
-  ADD CONSTRAINT `FK_F5299398A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-
---
--- Constraints for table `order_item`
+-- Beperkingen voor tabel `order_item`
 --
 ALTER TABLE `order_item`
   ADD CONSTRAINT `FK_52EA1F098D9F6D38` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`),
   ADD CONSTRAINT `FK_52EA1F09D41D1D42` FOREIGN KEY (`pizza_id`) REFERENCES `pizza` (`id`);
 
 --
--- Constraints for table `pizza`
+-- Beperkingen voor tabel `pizza`
 --
 ALTER TABLE `pizza`
   ADD CONSTRAINT `FK_CFDD826F12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);

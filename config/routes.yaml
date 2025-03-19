@@ -54,18 +54,3 @@ order_checkout:
 order_history:
     path: /order/history
     controller: App\Controller\OrderController::history
-
-app_login:
-    path: /login
-    controller: App\Controller\LoginController::login
-    methods: [GET, POST]
-
-app_register:
-    path: /register
-    controller: App\Controller\RegisterController::register
-    methods: [GET, POST]
-
-app_logout:
-    path: /logout
-    controller: App\Controller\LoginController::logout
-    methods: GET

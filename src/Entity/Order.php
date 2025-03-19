@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
+#[ORM\Table(name: '`order`')]
 class Order
 {
     #[ORM\Id]
@@ -15,11 +16,10 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "orders")]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $customerName = null;
 
-    #[ORM\Column(type: "datetime")]
+    #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
 
     #[ORM\OneToMany(mappedBy: "order", targetEntity: OrderItem::class, cascade: ["persist", "remove"])]
@@ -39,14 +39,14 @@ class Order
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getCustomerName(): ?string
     {
-        return $this->user;
+        return $this->customerName;
     }
 
-    public function setUser(?User $user): static
+    public function setCustomerName(string $customerName): static
     {
-        $this->user = $user;
+        $this->customerName = $customerName;
         return $this;
     }
 

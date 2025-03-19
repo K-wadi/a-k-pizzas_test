@@ -56,23 +56,6 @@
                     <a class="nav-link" href="{{ path('order_cart') }}">Winkelwagen</a>
                 </li>
             </ul>
-
-            <ul class="navbar-nav">
-                {% if app.user %}
-                    <!-- Gebruiker is ingelogd, toon alleen de uitlog knop -->
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-auth" href="{{ path('app_logout') }}">Uitloggen</a>
-                    </li>
-                {% else %}
-                    <!-- Gebruiker is NIET ingelogd, toon registratie & login -->
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-auth me-2" href="{{ path('app_register') }}">Registreren</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-sm btn-auth" href="{{ path('app_login') }}">Inloggen</a>
-                    </li>
-                {% endif %}
-            </ul>
         </div>
     </div>
 </nav>
