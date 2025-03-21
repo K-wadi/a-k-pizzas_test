@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 19 mrt 2025 om 12:57
--- Serverversie: 10.4.32-MariaDB
--- PHP-versie: 8.2.12
+-- Generation Time: Mar 21, 2025 at 01:39 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -26,7 +26,7 @@ USE `a_k_pizzas2`;
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `category`
+-- Table structure for table `category`
 --
 
 CREATE TABLE `category` (
@@ -35,42 +35,41 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `category`
+-- Dumping data for table `category`
 --
 
 INSERT INTO `category` (`id`, `name`) VALUES
-(1, 'Vlees'),
-(2, 'Vegetarisch'),
-(3, 'Vis'),
-(4, 'Specials');
+(1, 'Klassieke Pizza\'s'),
+(2, 'Speciale Pizza\'s'),
+(3, 'Pizza\'s met Vlees'),
+(4, 'Vegetarische Pizza\'s');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `doctrine_migration_versions`
+-- Table structure for table `contact`
 --
 
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `contact` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` longtext NOT NULL,
+  `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `doctrine_migration_versions`
+-- Dumping data for table `contact`
 --
 
-INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20250305111935', '2025-03-12 20:41:30', 280),
-('DoctrineMigrations\\Version20250311110238', '2025-03-12 20:41:31', 25),
-('DoctrineMigrations\\Version20250311114359', '2025-03-12 20:41:31', 4),
-('DoctrineMigrations\\Version20250319112204', '2025-03-19 12:22:12', 100),
-('DoctrineMigrations\\Version20250319113050', '2025-03-19 12:30:54', 56);
+INSERT INTO `contact` (`id`, `name`, `email`, `subject`, `message`, `created_at`) VALUES
+(1, 'khaled', 'khaledwadi747@gmail.com', 'Lekker', 'hi ik vind het heel lekker', '2025-03-21 01:17:23');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `messenger_messages`
+-- Table structure for table `messenger_messages`
 --
 
 CREATE TABLE `messenger_messages` (
@@ -86,28 +85,32 @@ CREATE TABLE `messenger_messages` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `order`
+-- Table structure for table `order`
 --
 
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
-  `status` varchar(255) NOT NULL,
   `customer_name` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL
+  `customer_email` varchar(255) NOT NULL,
+  `customer_phone` varchar(20) NOT NULL,
+  `delivery_address` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+  `status` varchar(255) NOT NULL,
+  `order_reference` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `order`
+-- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`id`, `status`, `customer_name`, `created_at`) VALUES
-(1, 'To Do', 'Gast', '2025-03-19 12:43:27'),
-(2, 'To Do', 'Gast', '2025-03-19 12:45:48');
+INSERT INTO `order` (`id`, `customer_name`, `customer_email`, `customer_phone`, `delivery_address`, `created_at`, `status`, `order_reference`) VALUES
+(1, 'Khaledwadi', 'khaledwadi747@gmail.com', '0643733706', 'Amsterdam 123', '2025-03-21 01:13:40', 'To Do', 'ORD-67DCAF34B7477'),
+(2, 'Khaledwadi', 'khaledwadi747@gmail.com', '0643733706', 'Amsterdam123', '2025-03-21 01:21:37', 'To Do', 'ORD-67DCB1115E96E');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `order_item`
+-- Table structure for table `order_item`
 --
 
 CREATE TABLE `order_item` (
@@ -118,17 +121,17 @@ CREATE TABLE `order_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `order_item`
+-- Dumping data for table `order_item`
 --
 
 INSERT INTO `order_item` (`id`, `order_id`, `pizza_id`, `quantity`) VALUES
-(1, 1, 1, 3),
-(2, 2, 4, 1);
+(1, 1, 3, 3),
+(2, 2, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `pizza`
+-- Table structure for table `pizza`
 --
 
 CREATE TABLE `pizza` (
@@ -141,61 +144,61 @@ CREATE TABLE `pizza` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Gegevens worden geëxporteerd voor tabel `pizza`
+-- Dumping data for table `pizza`
 --
 
 INSERT INTO `pizza` (`id`, `category_id`, `name`, `description`, `price`, `image`) VALUES
-(1, 1, 'BBQ Chicken', 'Kip met BBQ saus', 12.50, 'bbq-chicken.jpg'),
-(2, 1, 'Buffalo Chicken', 'Pittige kip', 13.00, 'buffalo-chicken.jpg'),
-(3, 1, 'Ham & Bacon', 'Ham en spek', 11.50, 'ham-bacon.jpg'),
-(4, 1, 'Hot Pepperoni', 'Extra pittige pepperoni', 11.50, 'hot-pepperoni.jpg'),
-(5, 1, 'Salami', 'Italiaanse salami', 11.00, 'salami.jpg'),
-(6, 1, 'Tandoori', 'Tandoori kip met kruiden', 13.50, 'tandoori.jpg'),
-(7, 1, 'Spicy Meat', 'Mix van pittig vlees', 14.00, 'spicy-meat.jpg'),
-(8, 1, 'Mexican Fire', 'Pittige Mexicaanse pizza', 12.50, 'mexican-fire.jpg'),
-(9, 2, 'Margherita', 'Tomaat en mozzarella', 10.00, 'margherita.jpg'),
-(10, 2, 'Four Cheese', 'Vier soorten kaas', 13.00, 'four-cheese.jpg'),
-(11, 2, 'Pesto Veggie', 'Pesto en groenten', 12.00, 'pesto-veggie.jpg'),
-(12, 2, 'Spinazie Ricotta', 'Spinazie en ricotta', 12.50, 'spinazie-ricotta.jpg'),
-(13, 2, 'Truffle Pizza', 'Truffel en kaas', 15.50, 'truffle-pizza.jpg'),
-(14, 2, 'Caprese', 'Tomaat, basilicum en mozzarella', 11.50, 'caprese.jpg'),
-(15, 2, 'Black Garlic', 'Zwarte knoflook en groenten', 14.00, 'black-garlic.jpg'),
-(16, 2, 'Flaming Veggie', 'Pittige groenten', 13.00, 'flaming-veggie.jpg'),
-(17, 3, 'Seafood', 'Zeevruchten', 14.00, 'seafood-pizza.jpg'),
-(18, 3, 'Smoked Salmon', 'Gerookte zalm', 15.00, 'salami.jpg'),
-(19, 3, 'Tuna Special', 'Tonijn met rode ui', 13.50, 'spicy.jpg'),
-(20, 3, 'Anchovy Deluxe', 'Ansjovis en kappertjes', 14.50, 'special.jpg'),
-(21, 3, 'Garlic Shrimp', 'Knoflook garnalen', 16.00, 'seafood-pizza.jpg'),
-(22, 3, 'Pesto Fish', 'Pesto en vis', 13.00, 'pesto-veggie.jpg'),
-(23, 3, 'Spicy Prawn', 'Pittige garnalen', 14.00, 'spicy.jpg'),
-(24, 3, 'Sambal Chicken', 'Pittige kip met sambal', 13.50, 'sambal-chicken.jpg'),
-(25, 4, 'Inferno', 'Extra pittige pizza', 15.00, 'inferno.jpg'),
-(26, 4, 'Nutella Pizza', 'Chocolade topping', 10.00, 'nutella.jpg'),
-(27, 4, 'Mushroom Deluxe', 'Paddenstoelen mix', 13.50, 'mushroom-deluxe.jpg'),
-(28, 4, 'Quattro Formaggi', 'Vier kazen', 14.50, 'quattro-formaggi.jpg'),
-(29, 4, 'Spicy Margherita', 'Pittige variant van de klassieke pizza', 12.00, 'spicy-margherita.jpg'),
-(30, 4, 'Deluxe Vlees', 'Mix van vlees met extra kaas', 14.00, 'deluxe-vlees.jpg'),
-(31, 4, 'Vegan Special', 'Volledig plantaardige pizza', 13.50, 'vegan-special.jpg'),
-(32, 4, 'Special Edition', 'Limited edition smaak', 16.00, 'special.jpg');
+(1, 1, 'Margherita', 'Tomatensaus, mozzarella, basilicum', 8.50, 'margherita.jpg'),
+(2, 1, 'Pepperoni', 'Tomatensaus, mozzarella, pepperoni', 10.50, 'pepperoni.jpg'),
+(3, 1, 'Four Cheese', 'Tomatensaus, mozzarella, gorgonzola, parmezaan, fontina', 12.50, 'four-cheese.jpg'),
+(4, 1, 'Caprese', 'Tomatensaus, mozzarella, verse tomaten, basilicum', 11.50, 'caprese.jpg'),
+(5, 1, 'Funghi', 'Tomatensaus, mozzarella, champignons', 10.00, 'funghi.jpg'),
+(6, 1, 'Quattro Formaggi', 'Tomatensaus, vier soorten kaas', 12.50, 'quattro-formaggi.jpg'),
+(7, 1, 'Spicy Margherita', 'Pittige tomatensaus, mozzarella, basilicum', 9.50, 'spicy-margherita.jpg'),
+(8, 1, 'Burrata Special', 'Tomatensaus, burrata, basilicum', 13.50, 'burrata.jpg'),
+(9, 2, 'BBQ Chicken', 'BBQ saus, mozzarella, kip, rode ui, koriander', 13.50, 'bbq-chicken.jpg'),
+(10, 2, 'Buffalo Chicken', 'Pittige kip, mozzarella, rode ui, ranch saus', 13.00, 'buffalo-chicken.jpg'),
+(11, 2, 'Tandoori', 'Tandoori kip met kruiden, ui, paprika', 13.50, 'tandoori.jpg'),
+(12, 2, 'Truffle', 'Truffelsaus, mozzarella, champignons, rucola', 15.50, 'truffle-pizza.jpg'),
+(13, 2, 'Pesto Deluxe', 'Pestosaus, mozzarella, cherrytomaten, pijnboompitten', 14.00, 'pesto-veggie.jpg'),
+(14, 2, 'Mexican Fire', 'Tomatensaus, mozzarella, jalapeños, maïs, paprika', 13.00, 'mexican-fire.jpg'),
+(15, 2, 'Black Garlic', 'Zwarte knoflooksaus, mozzarella, champignons', 14.50, 'black-garlic.jpg'),
+(16, 2, 'Special', 'Chef\'s special met vlees', 14.50, 'special.jpg'),
+(17, 3, 'Hot Pepperoni', 'Extra pittige pepperoni, mozzarella, jalapeños', 11.50, 'hot-pepperoni.jpg'),
+(18, 3, 'Salami', 'Italiaanse salami, mozzarella, oregano', 11.00, 'salami.jpg'),
+(19, 3, 'Ham & Bacon', 'Ham, spek, mozzarella, ui', 11.50, 'ham-bacon.jpg'),
+(20, 3, 'Spicy Meat', 'Pepperoni, ham, spek, gehakt, mozzarella', 14.50, 'spicy-meat.jpg'),
+(21, 3, 'Deluxe Vlees', 'Mix van verschillende vleessoorten', 15.50, 'deluxe-vlees.jpg'),
+(22, 3, 'Chili Cheese', 'Pittig gehakt, jalapeños, cheddar', 13.50, 'chili-cheese.jpg'),
+(23, 3, 'Sambal Chicken', 'Kip met sambal, ui, paprika', 13.50, 'sambal-chicken.jpg'),
+(24, 3, 'Inferno', 'Extra pittige vleespizza met jalapeños', 14.50, 'inferno.jpg'),
+(25, 4, 'Vegetariana', 'Tomatensaus, mozzarella, diverse groenten', 12.50, 'vegetariana.jpg'),
+(26, 4, 'Vegan Special', 'Tomatensaus, vegan kaas, groenten', 13.50, 'vegan-special.jpg'),
+(27, 4, 'Vegan', 'Tomatensaus, vegan kaas, champignons', 12.50, 'vegan.jpg'),
+(28, 4, 'Spinazie Ricotta', 'Spinazie, ricotta, knoflook', 13.00, 'spinazie-ricotta.jpg'),
+(29, 4, 'Mushroom Deluxe', 'Mix van verschillende paddenstoelen', 14.50, 'mushroom-deluxe.jpg'),
+(30, 4, 'Flaming Veggie', 'Pittige groenten, jalapeños', 13.00, 'flaming-veggie.jpg'),
+(31, 4, 'Prosciutto & Figs', 'Vijgen, rucola, balsamico', 15.50, 'prosciutto-figs.jpg'),
+(32, 4, 'Chili Cheese Veggie', 'Pittige groenten, cheddar', 13.50, 'chili-cheese.jpg');
 
 --
--- Indexen voor geëxporteerde tabellen
+-- Indexes for dumped tables
 --
 
 --
--- Indexen voor tabel `category`
+-- Indexes for table `category`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexen voor tabel `doctrine_migration_versions`
+-- Indexes for table `contact`
 --
-ALTER TABLE `doctrine_migration_versions`
-  ADD PRIMARY KEY (`version`);
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexen voor tabel `messenger_messages`
+-- Indexes for table `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
   ADD PRIMARY KEY (`id`),
@@ -204,13 +207,14 @@ ALTER TABLE `messenger_messages`
   ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
 
 --
--- Indexen voor tabel `order`
+-- Indexes for table `order`
 --
 ALTER TABLE `order`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_F5299398122432EB` (`order_reference`);
 
 --
--- Indexen voor tabel `order_item`
+-- Indexes for table `order_item`
 --
 ALTER TABLE `order_item`
   ADD PRIMARY KEY (`id`),
@@ -218,59 +222,65 @@ ALTER TABLE `order_item`
   ADD KEY `IDX_52EA1F09D41D1D42` (`pizza_id`);
 
 --
--- Indexen voor tabel `pizza`
+-- Indexes for table `pizza`
 --
 ALTER TABLE `pizza`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_CFDD826F12469DE2` (`category_id`);
 
 --
--- AUTO_INCREMENT voor geëxporteerde tabellen
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT voor een tabel `category`
+-- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT voor een tabel `messenger_messages`
+-- AUTO_INCREMENT for table `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `order`
+-- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT voor een tabel `order_item`
+-- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT voor een tabel `pizza`
+-- AUTO_INCREMENT for table `pizza`
 --
 ALTER TABLE `pizza`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- Beperkingen voor geëxporteerde tabellen
+-- Constraints for dumped tables
 --
 
 --
--- Beperkingen voor tabel `order_item`
+-- Constraints for table `order_item`
 --
 ALTER TABLE `order_item`
   ADD CONSTRAINT `FK_52EA1F098D9F6D38` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`),
   ADD CONSTRAINT `FK_52EA1F09D41D1D42` FOREIGN KEY (`pizza_id`) REFERENCES `pizza` (`id`);
 
 --
--- Beperkingen voor tabel `pizza`
+-- Constraints for table `pizza`
 --
 ALTER TABLE `pizza`
   ADD CONSTRAINT `FK_CFDD826F12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
