@@ -49,7 +49,7 @@ order_remove:
 order_checkout:
     path: /order/checkout
     controller: App\Controller\OrderController::checkout
-    methods: GET
+    methods: [GET, POST]
 
 order_history:
     path: /order/history

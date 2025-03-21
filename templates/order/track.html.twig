@@ -1,31 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bestelling geplaatst{% endblock %}
+{% block title %}Bestelling volgen{% endblock %}
 
 {% block body %}
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card">
-                <div class="card-body text-center">
-                    <div class="mb-4">
-                        <i class="fas fa-check-circle text-success fa-4x"></i>
-                    </div>
-                    <h1 class="card-title mb-4">Bedankt voor je bestelling!</h1>
-                    
-                    <div class="alert alert-info">
-                        <p class="mb-0">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Je bestelnummer is: <strong>{{ order.orderReference }}</strong><br>
-                            Bewaar dit nummer om je bestelling te kunnen volgen.
-                        </p>
+                <div class="card-body">
+                    <h1 class="h3 mb-4 text-center">
+                        <i class="fas fa-box me-2"></i>
+                        Bestelling {{ order.orderReference }}
+                    </h1>
+
+                    <div class="alert alert-{{ order.status == 'Done' ? 'success' : (order.status == 'In Progress' ? 'info' : 'warning') }}">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                {% if order.status == 'Done' %}
+                                    <i class="fas fa-check-circle fa-2x"></i>
+                                {% elseif order.status == 'In Progress' %}
+                                    <i class="fas fa-clock fa-2x"></i>
+                                {% else %}
+                                    <i class="fas fa-hourglass-start fa-2x"></i>
+                                {% endif %}
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h4 class="alert-heading h5">Status: {{ order.status }}</h4>
+                                <p class="mb-0">
+                                    {% if order.status == 'Done' %}
+                                        Je bestelling is klaar en onderweg!
+                                    {% elseif order.status == 'In Progress' %}
+                                        Je bestelling wordt nu bereid.
+                                    {% else %}
+                                        Je bestelling is ontvangen en wordt binnenkort bereid.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="card mb-4">
                         <div class="card-header bg-white">
                             <h3 class="h5 mb-0">
                                 <i class="fas fa-user me-2"></i>
-                                Bestelgegevens
+                                Bezorggegevens
                             </h3>
                         </div>
                         <div class="card-body">
@@ -52,10 +70,10 @@
                         </div>
                     </div>
 
-                    <div class="card mb-4">
+                    <div class="card">
                         <div class="card-header bg-white">
                             <h3 class="h5 mb-0">
-                                <i class="fas fa-utensils me-2"></i>
+                                <i class="fas fa-pizza-slice me-2"></i>
                                 Bestelde items
                             </h3>
                         </div>
@@ -100,12 +118,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-center gap-3">
-                        <a href="{{ path('order_track', {'reference': order.orderReference}) }}" 
-                           class="btn btn-primary">
-                            <i class="fas fa-search me-2"></i>
-                            Bestelling volgen
-                        </a>
+                    <div class="text-center mt-4">
                         <a href="{{ path('pizza_index') }}" class="btn btn-outline-secondary">
                             <i class="fas fa-utensils me-2"></i>
                             Terug naar menu
@@ -116,4 +129,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %} 

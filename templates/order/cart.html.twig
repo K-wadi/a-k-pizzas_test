@@ -2,37 +2,102 @@
 
 {% block title %}Winkelwagen{% endblock %}
 
-{% block content %}
-    <h1>Winkelwagen</h1>
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        Winkelwagen
+                    </h1>
+                </div>
+                <div class="card-body">
+                    {% if cart is empty %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-shopping-basket fa-3x text-muted mb-3"></i>
+                            <p class="lead text-muted">Je winkelwagen is leeg</p>
+                            <a href="{{ path('pizza_index') }}" class="btn btn-primary">
+                                <i class="fas fa-utensils me-2"></i>
+                                Bekijk ons menu
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Pizza</th>
+                                        <th class="text-center">Aantal</th>
+                                        <th class="text-end">Prijs per stuk</th>
+                                        <th class="text-end">Subtotaal</th>
+                                        <th class="text-center">Acties</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ item.pizza.image }}" alt="{{ item.pizza.name }}" 
+                                                         class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                                    <div>
+                                                        <h6 class="mb-0">{{ item.pizza.name }}</h6>
+                                                        <small class="text-muted">{{ item.pizza.description }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ path('order_decrease', {'id': item.pizza.id}) }}" 
+                                                       class="btn btn-outline-secondary btn-sm">
+                                                        <i class="fas fa-minus"></i>
+                                                    </a>
+                                                    <span class="btn btn-outline-secondary btn-sm disabled">
+                                                        {{ item.quantity }}
+                                                    </span>
+                                                    <a href="{{ path('order_increase', {'id': item.pizza.id}) }}" 
+                                                       class="btn btn-outline-secondary btn-sm">
+                                                        <i class="fas fa-plus"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td class="text-end">€{{ item.pizza.price|number_format(2, ',', '.') }}</td>
+                                            <td class="text-end">€{{ (item.pizza.price * item.quantity)|number_format(2, ',', '.') }}</td>
+                                            <td class="text-center">
+                                                <a href="{{ path('order_remove', {'id': item.pizza.id}) }}" 
+                                                   class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-end"><strong>Totaal:</strong></td>
+                                        <td class="text-end"><strong>€{{ total|number_format(2, ',', '.') }}</strong></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
 
-    {% if cart is empty %}
-        <p>Je winkelwagen is leeg.</p>
-    {% else %}
-        <table class="table table-dark">
-            <thead>
-            <tr>
-                <th>Pizza</th>
-                <th>Prijs</th>
-                <th>Aantal</th>
-                <th>Totaal</th>
-                <th>Actie</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in cart %}
-                <tr>
-                    <td>{{ item.pizza.name }}</td>
-                    <td>€{{ item.pizza.price|number_format(2, ',', '.') }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>€{{ (item.pizza.price * item.quantity)|number_format(2, ',', '.') }}</td>
-                    <td>
-                        <a href="{{ path('order_remove', {'id': item.pizza.id}) }}" class="btn btn-danger">Verwijderen</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        <a href="{{ path('order_checkout') }}" class="btn btn-success">Afrekenen</a>
-    {% endif %}
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ path('pizza_index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Verder winkelen
+                            </a>
+                            <a href="{{ path('order_checkout') }}" class="btn btn-primary">
+                                <i class="fas fa-check me-2"></i>
+                                Afrekenen
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

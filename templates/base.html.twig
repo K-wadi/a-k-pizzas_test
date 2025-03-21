@@ -1,69 +1,222 @@
+<!-- Dit is het type document dat we maken -->
 <!DOCTYPE html>
+<!-- Dit is een Nederlandse webpagina -->
 <html lang="nl">
 <head>
+    <!-- Hier zetten we belangrijke informatie over de pagina -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}A&K Pizza's{% endblock %}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Dit zorgt ervoor dat de website goed werkt op telefoons -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Dit is de titel die je bovenin je browser ziet -->
+    <title>{% block title %}A-K Pizzas{% endblock %} - A&K Pizza's</title>
+    <!-- Dit is het icoontje dat je in je browser tabblad ziet -->
+    <link rel="icon" href="{{ asset('img/logo.png') }}">
+    
+    <!-- Dit laadt Bootstrap in, dat gebruiken we voor de opmaak -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Dit laadt icoontjes in die we gebruiken -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Dit laadt het lettertype 'Poppins' in -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Hier beginnen we met onze eigen opmaak (CSS) -->
     <style>
+        /* Hier zetten we de kleuren die we vaak gebruiken */
+        :root {
+            --primary-color: #ff4d4d;    /* Hoofdkleur (rood) */
+            --secondary-color: #2c3e50;   /* Tweede kleur (donkerblauw) */
+            --accent-color: #f8f9fa;      /* Lichte achtergrondkleur */
+            --text-color: #2c3e50;        /* Tekstkleur */
+            --light-gray: #f8f9fa;        /* Lichtgrijze kleur */
+            --border-radius: 10px;        /* Afronding van hoeken */
+        }
+
+        /* Basis opmaak voor de hele website */
         body {
-            background-color: #1a1a1a; /* Donkere achtergrond */
+            font-family: 'Poppins', sans-serif;  /* Lettertype */
+            color: var(--text-color);            /* Tekstkleur */
+            background-color: var(--light-gray);  /* Achtergrondkleur */
+        }
+
+        /* Opmaak voor de navigatiebalk bovenaan */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* Schaduw onder de balk */
+            padding: 1rem 0;
+        }
+
+        /* Opmaak voor het logo en naam */
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
+
+        /* Opmaak voor de links in het menu */
+        .nav-link {
+            color: var(--secondary-color) !important;
+            font-weight: 500;
+            transition: color 0.3s ease;  /* Maakt kleurverandering soepel */
+        }
+
+        /* Als je met je muis over een link gaat */
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Opmaak voor kaartjes (bijvoorbeeld pizza's) */
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        /* Effect als je met je muis over een kaartje gaat */
+        .card:hover {
+            transform: translateY(-5px);  /* Kaartje gaat iets omhoog */
+        }
+
+        /* Opmaak voor de rode knoppen */
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        /* Effect als je met je muis over een knop gaat */
+        .btn-primary:hover {
+            background-color: #ff3333;
+            border-color: #ff3333;
+            transform: translateY(-2px);  /* Knop gaat iets omhoog */
+        }
+
+        /* Opmaak voor invoervelden */
+        .form-control {
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 0.75rem 1rem;
+        }
+
+        /* Als een invoerveld geselecteerd is */
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(255,77,77,0.25);
+        }
+
+        /* Opmaak voor pizza kaartjes */
+        .pizza-card {
+            overflow: hidden;
+            border-radius: var(--border-radius);
+        }
+
+        /* Opmaak voor pizza afbeeldingen */
+        .pizza-image {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        /* Effect als je met je muis over een pizza afbeelding gaat */
+        .pizza-card:hover .pizza-image {
+            transform: scale(1.05);  /* Afbeelding wordt iets groter */
+        }
+
+        /* Opmaak voor het winkelwagen nummer */
+        .cart-badge {
+            position: relative;
+            top: -8px;
+            right: 5px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 10px;
+            background-color: var(--primary-color);
             color: white;
         }
-        .navbar {
-            background-color: #c0392b; /* Rood */
-        }
-        .navbar-brand img {
-            width: 40px;
-            margin-right: 10px;
-        }
-        .nav-link {
-            color: white !important;
-        }
-        .nav-link:hover {
-            color: #f39c12 !important; /* Geel effect */
-        }
-        .btn-auth {
-            color: white !important;
-            border: 1px solid white;
-        }
-        .btn-auth:hover {
-            background-color: #f39c12 !important;
-            border-color: #f39c12 !important;
-        }
     </style>
+    <!-- Ruimte voor extra opmaak per pagina -->
+    {% block stylesheets %}{% endblock %}
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="{{ path('pizza_index') }}">
-            <img src="{{ asset('img/logo.png') }}" alt="Logo">
-            <strong>A&K Pizza's</strong>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('pizza_index') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('pizza_categories') }}">Categorieën</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('order_cart') }}">Winkelwagen</a>
-                </li>
-            </ul>
+    <!-- Dit is de navigatiebalk bovenaan de pagina -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container">
+            <!-- Logo en naam van de website -->
+            <a class="navbar-brand d-flex align-items-center" href="{{ path('pizza_index') }}">
+                <img src="{{ asset('img/logo.png') }}" alt="A&K Pizza's" height="40" class="me-2">
+                A&K Pizza's
+            </a>
+            <!-- Knop voor mobiele menu -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Menu items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <!-- Link naar het pizzamenu -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('pizza_index') }}">
+                            <i class="fas fa-pizza-slice me-1"></i>
+                            Menu
+                        </a>
+                    </li>
+                    <!-- Link naar het bakker dashboard -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('baker_dashboard') }}">
+                            <i class="fas fa-fire me-1"></i>
+                            Bakker Dashboard
+                        </a>
+                    </li>
+                    <!-- Link naar de contactpagina -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('contact') }}">
+                            <i class="fas fa-envelope me-1"></i>
+                            Contact
+                        </a>
+                    </li>
+                </ul>
+                <!-- Winkelwagen knop -->
+                <div class="d-flex">
+                    <a href="{{ path('order_cart') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-shopping-cart me-1"></i>
+                        Winkelwagen
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="container mt-4">
-    {% block content %}{% endblock %}
-</div>
+    <!-- Hier komt de inhoud van elke pagina -->
+    <main class="container py-4">
+        {% block body %}{% endblock %}
+    </main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Dit is de voettekst onderaan de pagina -->
+    <footer class="bg-light mt-auto py-4">
+        <div class="container">
+            <div class="row">
+                <!-- Linker deel van de footer -->
+                <div class="col-md-6">
+                    <h5>A&K Pizza's</h5>
+                    <p class="text-muted mb-2">De lekkerste pizza's van Nederland!</p>
+                    <p class="text-muted mb-0">
+                        <i class="fas fa-envelope me-2"></i><a href="{{ path('contact') }}" class="text-muted text-decoration-none">Contact</a>
+                    </p>
+                </div>
+                <!-- Rechter deel van de footer -->
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">&copy; {{ "now"|date("Y") }} A&K Pizza's. Alle rechten voorbehouden.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Dit laadt Bootstrap JavaScript in voor interactieve onderdelen -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Ruimte voor extra JavaScript per pagina -->
+    {% block javascripts %}{% endblock %}
 </body>
 </html>

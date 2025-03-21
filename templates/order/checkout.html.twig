@@ -1,18 +1,131 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Afrekenen{% endblock %}
+{% block title %}Bestelling afronden{% endblock %}
 
-{% block content %}
-    <h1>Afrekenen</h1>
-    <form action="{{ path('order_checkout') }}" method="post">
-        <div class="mb-3">
-            <label for="name" class="form-label">Naam</label>
-            <input type="text" class="form-control" name="name" required>
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-clipboard-list me-2"></i>
+                        Bestelling afronden
+                    </h1>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {
+                        'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'},
+                        'method': 'POST'
+                    }) }}
+                    {{ form_widget(form._token) }}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.customerName, 'Naam', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.customerName, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Vul uw naam in'
+                                }
+                            }) }}
+                            {{ form_errors(form.customerName) }}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.customerEmail, 'E-mailadres', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.customerEmail, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Vul uw e-mailadres in'
+                                }
+                            }) }}
+                            {{ form_errors(form.customerEmail) }}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.customerPhone, 'Telefoonnummer', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.customerPhone, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Vul uw telefoonnummer in'
+                                }
+                            }) }}
+                            {{ form_errors(form.customerPhone) }}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.deliveryAddress, 'Bezorgadres', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.deliveryAddress, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Vul uw bezorgadres in'
+                                }
+                            }) }}
+                            {{ form_errors(form.deliveryAddress) }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        {{ form_widget(form.submit, {
+                            'attr': {
+                                'class': 'btn btn-primary btn-lg'
+                            },
+                            'label': 'Bestelling plaatsen'
+                        }) }}
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="address" class="form-label">Adres</label>
-            <input type="text" class="form-control" name="address" required>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h2 class="h5 mb-0">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        Bestelling overzicht
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                {% for item in cart %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ item.pizza.image }}" alt="{{ item.pizza.name }}" 
+                                                     class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                                <div>
+                                                    <h6 class="mb-0">{{ item.pizza.name }}</h6>
+                                                    <small class="text-muted">{{ item.quantity }}x</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-end">€{{ (item.pizza.price * item.quantity)|number_format(2, ',', '.') }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><strong>Totaal</strong></td>
+                                    <td class="text-end"><strong>€{{ total|number_format(2, ',', '.') }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="{{ path('order_cart') }}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Terug naar winkelwagen
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Bestelling plaatsen</button>
-    </form>
+    </div>
+</div>
 {% endblock %}

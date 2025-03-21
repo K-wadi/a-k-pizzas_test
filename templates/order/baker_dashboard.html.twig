@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bakker Dashboard{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-oven me-2"></i>
+                        Bakker Dashboard
+                    </h1>
+                </div>
+                <div class="card-body">
+                    {% if orders is empty %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-utensils fa-3x text-muted mb-3"></i>
+                            <p class="lead text-muted">Er zijn momenteel geen bestellingen</p>
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Bestelnummer</th>
+                                        <th>Klant</th>
+                                        <th>Items</th>
+                                        <th>Status</th>
+                                        <th>Datum</th>
+                                        <th>Acties</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                        <tr>
+                                            <td>
+                                                <strong>{{ order.orderReference }}</strong>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <strong>{{ order.customerName }}</strong><br>
+                                                    <small class="text-muted">{{ order.customerPhone }}</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <ul class="list-unstyled mb-0">
+                                                    {% for item in order.orderItems %}
+                                                        <li>
+                                                            <small>
+                                                                {{ item.quantity }}x {{ item.pizza.name }}
+                                                            </small>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </td>
+                                            <td>
+                                                <span class="status-badge status-{{ order.status|lower|replace({' ': '-'}) }}">
+                                                    {{ order.status }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ order.createdAt|date('d-m-Y H:i') }}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    {% if order.status == 'To Do' %}
+                                                        <a href="{{ path('order_update', {'id': order.id, 'status': 'In Progress'}) }}" 
+                                                           class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-play me-1"></i>
+                                                            Start
+                                                        </a>
+                                                    {% elseif order.status == 'In Progress' %}
+                                                        <a href="{{ path('order_update', {'id': order.id, 'status': 'Done'}) }}" 
+                                                           class="btn btn-sm btn-success">
+                                                            <i class="fas fa-check me-1"></i>
+                                                            Klaar
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

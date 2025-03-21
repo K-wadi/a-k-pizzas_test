@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact - A&K Pizza's{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-envelope me-2"></i>
+                        Contact
+                    </h1>
+                </div>
+                <div class="card-body">
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.name, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.name, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Vul uw naam in'
+                                }
+                            }) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            {{ form_label(form.email, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.email, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Vul uw e-mailadres in'
+                                }
+                            }) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            {{ form_label(form.subject, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.subject, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Onderwerp van uw bericht'
+                                }
+                            }) }}
+                            {{ form_errors(form.subject) }}
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            {{ form_label(form.message, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.message, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Typ hier uw bericht'
+                                }
+                            }) }}
+                            {{ form_errors(form.message) }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        {{ form_widget(form.submit, {
+                            'attr': {
+                                'class': 'btn btn-primary btn-lg'
+                            }
+                        }) }}
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h2 class="h5 mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Contactgegevens
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-4">Heeft u vragen of opmerkingen? Neem gerust contact met ons op!</p>
+                    
+                    <h3 class="h6 mb-3">Openingstijden:</h3>
+                    <ul class="list-unstyled mb-4">
+                        <li>Maandag t/m Vrijdag: 16:00 - 22:00</li>
+                        <li>Zaterdag en Zondag: 12:00 - 22:00</li>
+                    </ul>
+
+                    <h3 class="h6 mb-3">Adres:</h3>
+                    <address class="mb-4">
+                        A&K Pizza's<br>
+                        Pizzastraat 123<br>
+                        1234 AB Amsterdam<br>
+                        <i class="fas fa-phone me-2"></i> <a href="tel:+31201234567">020 123 4567</a><br>
+                        <i class="fas fa-envelope me-2"></i> <a href="mailto:info@akpizzas.nl">info@akpizzas.nl</a>
+                    </address>
+
+                    <div class="ratio ratio-4x3 mb-3">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2436.5882976463337!2d4.8906811!3d52.373169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c609c6b5d2f133%3A0x7c2b2f0c0e0c0c0c!2sAmsterdam!5e0!3m2!1sen!2snl!4v1621436000000!5m2!1sen!2snl" 
+                                style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

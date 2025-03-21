@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\Pizza;
+use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,20 +21,23 @@ class OrderController extends AbstractController
     {
         $cart = $request->getSession()->get('cart', []);
         $pizzas = [];
+        $total = 0;
 
         foreach ($cart as $id => $quantity) {
             $pizza = $entityManager->getRepository(Pizza::class)->find($id);
             if ($pizza) {
                 $pizzas[] = ['pizza' => $pizza, 'quantity' => $quantity];
+                $total += $pizza->getPrice() * $quantity;
             }
         }
 
         return $this->render('order/cart.html.twig', [
             'cart' => $pizzas,
+            'total' => $total
         ]);
     }
 
-    #[Route('/checkout', name: 'order_checkout')]
+    #[Route('/checkout', name: 'order_checkout', methods: ['GET', 'POST'])]
     public function checkout(Request $request, EntityManagerInterface $entityManager): Response
     {
         $cart = $request->getSession()->get('cart', []);
@@ -41,35 +45,65 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('pizza_index');
         }
 
-        $customerName = $request->request->get('customer_name', 'Gast');
-
         $order = new Order();
-        $order->setCustomerName($customerName);
-        $order->setStatus('To Do');
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($cart as $id => $quantity) {
+                $pizza = $entityManager->getRepository(Pizza::class)->find($id);
+                if ($pizza) {
+                    $orderItem = new OrderItem();
+                    $orderItem->setPizza($pizza);
+                    $orderItem->setQuantity($quantity);
+                    $order->addOrderItem($orderItem);
+                    $entityManager->persist($orderItem);
+                }
+            }
+
+            $entityManager->persist($order);
+            $entityManager->flush();
+
+            $request->getSession()->set('cart', []);
+
+            return $this->redirectToRoute('order_success');
+        }
+
+        $pizzas = [];
+        $total = 0;
         foreach ($cart as $id => $quantity) {
             $pizza = $entityManager->getRepository(Pizza::class)->find($id);
             if ($pizza) {
-                $orderItem = new OrderItem();
-                $orderItem->setPizza($pizza);
-                $orderItem->setQuantity($quantity);
-                $order->addOrderItem($orderItem);
-                $entityManager->persist($orderItem);
+                $pizzas[] = ['pizza' => $pizza, 'quantity' => $quantity];
+                $total += $pizza->getPrice() * $quantity;
             }
         }
 
-        $entityManager->persist($order);
-        $entityManager->flush();
-
-        $request->getSession()->set('cart', []);
-
-        return $this->redirectToRoute('order_success');
+        return $this->render('order/checkout.html.twig', [
+            'form' => $form->createView(),
+            'cart' => $pizzas,
+            'total' => $total
+        ]);
     }
 
     #[Route('/success', name: 'order_success')]
-    public function success(): Response
+    public function success(OrderRepository $orderRepository): Response
     {
-        return $this->render('order/success.html.twig');
+        $order = $orderRepository->findOneBy([], ['createdAt' => 'DESC']);
+        
+        if (!$order) {
+            return $this->redirectToRoute('pizza_index');
+        }
+
+        $total = 0;
+        foreach ($order->getOrderItems() as $item) {
+            $total += $item->getPizza()->getPrice() * $item->getQuantity();
+        }
+
+        return $this->render('order/success.html.twig', [
+            'order' => $order,
+            'total' => $total
+        ]);
     }
 
     #[Route('/history', name: 'order_history')]
@@ -134,6 +168,72 @@ class OrderController extends AbstractController
             $session->set('cart', $cart);
         }
 
+        return $this->redirectToRoute('order_cart');
+    }
+
+    #[Route('/baker-dashboard', name: 'baker_dashboard')]
+    public function bakerDashboard(OrderRepository $orderRepository): Response
+    {
+        $orders = $orderRepository->findBy([], ['createdAt' => 'DESC']);
+        
+        return $this->render('order/baker_dashboard.html.twig', [
+            'orders' => $orders,
+        ]);
+    }
+
+    #[Route('/track/{reference}', name: 'order_track')]
+    public function track(string $reference, OrderRepository $orderRepository): Response
+    {
+        $order = $orderRepository->findOneBy(['orderReference' => $reference]);
+        
+        if (!$order) {
+            throw $this->createNotFoundException('Bestelling niet gevonden.');
+        }
+
+        $total = 0;
+        foreach ($order->getOrderItems() as $item) {
+            $total += $item->getPizza()->getPrice() * $item->getQuantity();
+        }
+
+        return $this->render('order/track.html.twig', [
+            'order' => $order,
+            'total' => $total
+        ]);
+    }
+
+    #[Route('/increase/{id}', name: 'order_increase')]
+    public function increase(Pizza $pizza, Request $request): Response
+    {
+        $cart = $request->getSession()->get('cart', []);
+        $id = $pizza->getId();
+        
+        if (!isset($cart[$id])) {
+            $cart[$id] = 0;
+        }
+        
+        $cart[$id]++;
+        
+        $request->getSession()->set('cart', $cart);
+        
+        return $this->redirectToRoute('order_cart');
+    }
+
+    #[Route('/decrease/{id}', name: 'order_decrease')]
+    public function decrease(Pizza $pizza, Request $request): Response
+    {
+        $cart = $request->getSession()->get('cart', []);
+        $id = $pizza->getId();
+        
+        if (isset($cart[$id])) {
+            if ($cart[$id] > 1) {
+                $cart[$id]--;
+            } else {
+                unset($cart[$id]);
+            }
+        }
+        
+        $request->getSession()->set('cart', $cart);
+        
         return $this->redirectToRoute('order_cart');
     }
 }
